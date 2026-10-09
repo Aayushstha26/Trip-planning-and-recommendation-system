@@ -1,0 +1,17 @@
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: trip-planner-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dev_password
+      POSTGRES_DB: trip_planner
+    ports:
+      - "5433:5433"
+    volumes:
+      - trip_planner_data:/var/lib/postgresql/data
+
+volumes:
+  trip_planner_data:
