@@ -12,6 +12,16 @@ enum Role {
   ADMIN
   USER
 }
+enum Difficulty {
+  EASY
+  MODERATE
+  HARD
+}
+
+enum MemberRole {
+  OWNER
+  MEMBER
+}
 
 model User {
   id           Int       @id @default(autoincrement())
@@ -23,4 +33,82 @@ model User {
 
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  ownedGroups Group[]       @relation("GroupOwner")
+  memberships GroupMember[]
+
+  @@map("users")
+}
+
+model Destination {
+  id              String     @id @default(uuid())
+  name            String     @unique
+  region          String
+  description     String?
+  latitude        Float
+  longitude       Float
+  maxAltitudeM    Int?
+  durationDays    Int
+  estimatedBudget Int                    // per person, in NPR
+  difficulty      Difficulty
+  bestSeasons     String[]
+  tags            String[]
+  imageUrl        String?
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+
+  groups Group[]
+
+  @@index([difficulty, estimatedBudget])
+  @@map("destinations")
+}
+
+model Group {
+  id            String    @id @default(uuid())
+  name          String
+  ownerId       Int
+  destinationId String?
+  startDate     DateTime?
+  endDate       DateTime?
+  inviteCode    String    @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  owner       User          @relation("GroupOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  destination Destination?  @relation(fields: [destinationId], references: [id], onDelete: SetNull)
+  members     GroupMember[]
+
+  @@index([ownerId])
+  @@map("groups")
+}
+
+model GroupMember {
+  id       String     @id @default(uuid())
+  groupId  String
+  userId   Int
+  role     MemberRole @default(MEMBER)
+  joinedAt DateTime   @default(now())
+
+  group      Group       @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  preference Preference?
+
+  @@unique([groupId, userId])
+  @@index([userId])
+  @@map("group_members")
+}
+
+model Preference {
+  id              String      @id @default(uuid())
+  groupMemberId   String      @unique
+  budget          Int                      // max budget per person, in NPR
+  difficulty      Difficulty
+  maxDurationDays Int
+  interests       String[]                 // ["trekking", "culture", "wildlife"]
+  preferredSeason String?                  // "MARCH", "OCTOBER", ...
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  groupMember GroupMember @relation(fields: [groupMemberId], references: [id], onDelete: Cascade)
+
+  @@map("preferences")
 }
