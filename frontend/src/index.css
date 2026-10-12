@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root,
+[data-theme="synthetic-lime"] {
+  --theme-bg: #f6faf7;
+  --theme-surface: rgba(255, 255, 255, 0.92);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #ebf5ee;
+  --theme-border: rgba(6, 17, 13, 0.14);
+  --theme-border-subtle: rgba(6, 17, 13, 0.07);
+  --theme-border-highlight: #c8ff00;
+  --theme-primary: #06110d;
+  --theme-primary-hover: #142821;
+  --theme-primary-text: #c8ff00;
+  --theme-accent: #c8ff00;
+  --theme-accent-contrast: #06110d;
+  --theme-text-main: #06110d;
+  --theme-text-muted: #53675e;
+  --theme-glow: rgba(200, 255, 0, 0.4);
+  --theme-card-shadow: 0 12px 35px -8px rgba(6, 17, 13, 0.08), 0 0 1px rgba(6, 17, 13, 0.12);
+}
+
+[data-theme="hyper-cobalt"] {
+  --theme-bg: #fbf8f4;
+  --theme-surface: rgba(255, 255, 255, 0.94);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #fff1e5;
+  --theme-border: rgba(0, 56, 255, 0.16);
+  --theme-border-subtle: rgba(255, 216, 184, 0.7);
+  --theme-border-highlight: #0038ff;
+  --theme-primary: #0038ff;
+  --theme-primary-hover: #1e52ff;
+  --theme-primary-text: #ffffff;
+  --theme-accent: #ffd8b8;
+  --theme-accent-contrast: #0038ff;
+  --theme-text-main: #0a1128;
+  --theme-text-muted: #64708d;
+  --theme-glow: rgba(0, 56, 255, 0.2);
+  --theme-card-shadow: 0 12px 35px -8px rgba(0, 56, 255, 0.1), 0 0 1px rgba(0, 56, 255, 0.15);
+}
+
+[data-theme="toxic-violet"] {
+  --theme-bg: #f8f9fc;
+  --theme-surface: rgba(255, 255, 255, 0.94);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #edf1f8;
+  --theme-border: rgba(61, 0, 122, 0.15);
+  --theme-border-subtle: rgba(232, 236, 241, 0.95);
+  --theme-border-highlight: #3d007a;
+  --theme-primary: #3d007a;
+  --theme-primary-hover: #5303a1;
+  --theme-primary-text: #ffffff;
+  --theme-accent: #9d34ff;
+  --theme-accent-contrast: #ffffff;
+  --theme-text-main: #180330;
+  --theme-text-muted: #665f74;
+  --theme-glow: rgba(61, 0, 122, 0.18);
+  --theme-card-shadow: 0 12px 35px -8px rgba(61, 0, 122, 0.09), 0 0 1px rgba(61, 0, 122, 0.14);
+}
+
+[data-theme="carbon-teal"] {
+  --theme-bg: #f4fbf7;
+  --theme-surface: rgba(255, 255, 255, 0.94);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #e4f7e1;
+  --theme-border: rgba(4, 47, 50, 0.15);
+  --theme-border-subtle: rgba(214, 255, 203, 0.7);
+  --theme-border-highlight: #042f32;
+  --theme-primary: #042f32;
+  --theme-primary-hover: #084347;
+  --theme-primary-text: #d6ffcb;
+  --theme-accent: #d6ffcb;
+  --theme-accent-contrast: #042f32;
+  --theme-text-main: #042f32;
+  --theme-text-muted: #496869;
+  --theme-glow: rgba(4, 47, 50, 0.18);
+  --theme-card-shadow: 0 12px 35px -8px rgba(4, 47, 50, 0.09), 0 0 1px rgba(4, 47, 50, 0.14);
+}
+
+[data-theme="chrome-violet"] {
+  --theme-bg: #f5faff;
+  --theme-surface: rgba(255, 255, 255, 0.94);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #e6f6fe;
+  --theme-border: rgba(95, 44, 255, 0.16);
+  --theme-border-subtle: rgba(223, 246, 255, 0.9);
+  --theme-border-highlight: #5f2cff;
+  --theme-primary: #5f2cff;
+  --theme-primary-hover: #7547ff;
+  --theme-primary-text: #ffffff;
+  --theme-accent: #dff6ff;
+  --theme-accent-contrast: #5f2cff;
+  --theme-text-main: #0e102d;
+  --theme-text-muted: #646b8b;
+  --theme-glow: rgba(95, 44, 255, 0.2);
+  --theme-card-shadow: 0 12px 35px -8px rgba(95, 44, 255, 0.1), 0 0 1px rgba(95, 44, 255, 0.15);
+}
+
+[data-theme="warm-lime"] {
+  --theme-bg: #f9faf4;
+  --theme-surface: rgba(255, 255, 255, 0.94);
+  --theme-surface-solid: #ffffff;
+  --theme-elevated: #eff5dd;
+  --theme-border: rgba(47, 58, 29, 0.16);
+  --theme-border-subtle: rgba(207, 255, 116, 0.5);
+  --theme-border-highlight: #2f3a1d;
+  --theme-primary: #2f3a1d;
+  --theme-primary-hover: #3e4d27;
+  --theme-primary-text: #cfff74;
+  --theme-accent: #cfff74;
+  --theme-accent-contrast: #2f3a1d;
+  --theme-text-main: #1d2511;
+  --theme-text-muted: #5a6845;
+  --theme-glow: rgba(47, 58, 29, 0.18);
+  --theme-card-shadow: 0 12px 35px -8px rgba(47, 58, 29, 0.09), 0 0 1px rgba(47, 58, 29, 0.14);
+}
+
+@layer base {
+  body {
+    background-color: var(--theme-bg);
+    color: var(--theme-text-main);
+    font-family: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
