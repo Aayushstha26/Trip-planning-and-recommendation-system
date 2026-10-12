@@ -40,9 +40,7 @@ const userController = {
         return res.status(200).json({
             success: true,
             message: "Login successful",
-            user,
-            accessToken,
-            refreshToken
+            user
         });
     }),
 
@@ -74,8 +72,6 @@ const userController = {
         return res.status(200).json({
             success: true,
             message: "Access token refreshed successfully",
-            accessToken,
-            refreshToken: newRefreshToken
         });
     }),
 
