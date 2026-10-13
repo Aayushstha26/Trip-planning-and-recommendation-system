@@ -1,7 +1,7 @@
 import { Router } from "express";
-import userController from "../module/User/user.controller.js";
-import { authenticate, authorizeRoles } from "../common/middleware/auth.middleware.js";
-import { validate } from "../common/middleware/validate.middleware.js";
+import userController from "../../module/User/user.controller.js";
+import { authenticate, authorizeRoles } from "../../common/middleware/auth.middleware.js";
+import { validate } from "../../common/middleware/validate.middleware.js";
 import {
     registerSchema,
     loginSchema,
@@ -10,7 +10,7 @@ import {
     changePasswordSchema,
     getUsersQuerySchema,
     userIdParamSchema
-} from "../module/User/user.validation.js";
+} from "../../module/User/user.validation.js";
 
 const router = Router();
 
