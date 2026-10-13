@@ -48,7 +48,7 @@ model Destination {
   longitude       Float
   maxAltitudeM    Int?
   durationDays    Int
-  estimatedBudget Int                    // per person, in NPR
+  estimatedBudget Int                   
   difficulty      Difficulty
   bestSeasons     String[]
   tags            String[]
