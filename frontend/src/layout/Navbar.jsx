@@ -74,15 +74,22 @@ export const Navbar = () => {
 
         {/* Right side CTA */}
         <div className="flex items-center gap-3">
-          <Button asChild variant="outline" className="rounded-xl font-semibold">
+           <Button
+            asChild
+            className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
+            style={{
+              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
+              color: 'var(--theme-btn-text, #06110d)',
+            }}
+          >
             <Link to="/login">Sign In</Link>
           </Button>
           <Button
             asChild
-            className="rounded-xl font-bold shadow-md cursor-pointer"
+            className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
             style={{
-              backgroundColor: 'var(--theme-primary)',
-              color: 'var(--theme-primary-text)',
+              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
+              color: 'var(--theme-btn-text, #06110d)',
             }}
           >
             <Link to="/planner">Plan Trip</Link>

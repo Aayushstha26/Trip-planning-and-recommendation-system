@@ -169,10 +169,10 @@ export const Login = () => {
           <button
             type="submit"
             disabled={isPending}
-            className="w-full mt-2 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 shadow-md"
+            className="w-full mt-2 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 shadow-md hover:brightness-95"
             style={{
-              backgroundColor: 'var(--theme-primary)',
-              color: 'var(--theme-primary-text)',
+              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
+              color: 'var(--theme-btn-text, #06110d)',
             }}
           >
             {isPending ? (

@@ -12,6 +12,9 @@
   --theme-primary: #06110d;
   --theme-primary-hover: #142821;
   --theme-primary-text: #c8ff00;
+  --theme-btn-bg: #c8ff00;
+  --theme-btn-hover: #b4ed00;
+  --theme-btn-text: #06110d;
   --theme-accent: #c8ff00;
   --theme-accent-contrast: #06110d;
   --theme-text-main: #06110d;
@@ -31,6 +34,9 @@
   --theme-primary: #0038ff;
   --theme-primary-hover: #1e52ff;
   --theme-primary-text: #ffffff;
+  --theme-btn-bg: #0038ff;
+  --theme-btn-hover: #1e52ff;
+  --theme-btn-text: #ffffff;
   --theme-accent: #ffd8b8;
   --theme-accent-contrast: #0038ff;
   --theme-text-main: #0a1128;
@@ -50,6 +56,9 @@
   --theme-primary: #3d007a;
   --theme-primary-hover: #5303a1;
   --theme-primary-text: #ffffff;
+  --theme-btn-bg: #3d007a;
+  --theme-btn-hover: #5303a1;
+  --theme-btn-text: #ffffff;
   --theme-accent: #9d34ff;
   --theme-accent-contrast: #ffffff;
   --theme-text-main: #180330;
@@ -69,6 +78,9 @@
   --theme-primary: #042f32;
   --theme-primary-hover: #084347;
   --theme-primary-text: #d6ffcb;
+  --theme-btn-bg: #d6ffcb;
+  --theme-btn-hover: #bcf7ad;
+  --theme-btn-text: #042f32;
   --theme-accent: #d6ffcb;
   --theme-accent-contrast: #042f32;
   --theme-text-main: #042f32;
@@ -88,6 +100,9 @@
   --theme-primary: #5f2cff;
   --theme-primary-hover: #7547ff;
   --theme-primary-text: #ffffff;
+  --theme-btn-bg: #5f2cff;
+  --theme-btn-hover: #7547ff;
+  --theme-btn-text: #ffffff;
   --theme-accent: #dff6ff;
   --theme-accent-contrast: #5f2cff;
   --theme-text-main: #0e102d;
@@ -107,6 +122,9 @@
   --theme-primary: #2f3a1d;
   --theme-primary-hover: #3e4d27;
   --theme-primary-text: #cfff74;
+  --theme-btn-bg: #cfff74;
+  --theme-btn-hover: #bee862;
+  --theme-btn-text: #1d2511;
   --theme-accent: #cfff74;
   --theme-accent-contrast: #2f3a1d;
   --theme-text-main: #1d2511;
