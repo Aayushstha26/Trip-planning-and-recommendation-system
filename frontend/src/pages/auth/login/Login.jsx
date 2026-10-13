@@ -1,37 +1,37 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Compass, Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react'
-import { useAppDispatch } from '@/store/hooks'
-import { setCredentials } from '@/store/slices/authSlice'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'sonner'
+import { Compass, Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { loginSchema, loginDefaultValues } from '@/schemas'
+import { useLogin } from '@/hooks/useAuth'
 
 export const Login = () => {
   const navigate = useNavigate()
-  const dispatch = useAppDispatch()
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setErrorMessage('')
-    setIsLoading(true)
-
-    try {
-      dispatch(
-        setCredentials({
-          user: { email, name: email.split('@')[0] },
-          token: 'demo_token_123',
-        })
-      )
+  const { mutate: loginUser, isPending } = useLogin({
+    onSuccess: (data) => {
+      toast.success(data?.message || 'Welcome back!')
       navigate('/')
-    } catch (err) {
-      setErrorMessage(err.message || 'Login failed. Please check your credentials.')
-    } finally {
-      setIsLoading(false)
-    }
+    },
+    onError: (err) => {
+      toast.error(err?.message || 'Invalid email or password. Please try again.')
+    },
+  })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: loginDefaultValues,
+    mode: 'onTouched',
+  })
+  const onSubmit = (data) => {
+    loginUser({ email: data.email, password: data.password })
   }
 
   return (
@@ -97,13 +97,9 @@ export const Login = () => {
           </p>
         </div>
 
-        {errorMessage && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold">
-            {errorMessage}
-          </div>
-        )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Email */}
           <div>
             <label
               className="block text-xs font-bold uppercase tracking-wider mb-1.5"
@@ -115,20 +111,22 @@ export const Login = () => {
               <Mail className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
                 placeholder="name@example.com"
                 className="w-full border rounded-xl pl-10 pr-4 py-2.5 text-sm font-semibold focus:outline-none transition-colors"
                 style={{
                   backgroundColor: 'var(--theme-elevated)',
-                  borderColor: 'var(--theme-border-subtle)',
+                  borderColor: errors.email ? 'rgb(239 68 68)' : 'var(--theme-border-subtle)',
                   color: 'var(--theme-text-main)',
                 }}
+                {...register('email')}
               />
             </div>
+            {errors.email && (
+              <p className="mt-1 text-xs text-red-500 font-medium">{errors.email.message}</p>
+            )}
           </div>
 
+          {/* Password */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label
@@ -145,16 +143,14 @@ export const Login = () => {
               <Lock className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
                 type={showPassword ? 'text' : 'password'}
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 className="w-full border rounded-xl pl-10 pr-10 py-2.5 text-sm font-semibold focus:outline-none transition-colors"
                 style={{
                   backgroundColor: 'var(--theme-elevated)',
-                  borderColor: 'var(--theme-border-subtle)',
+                  borderColor: errors.password ? 'rgb(239 68 68)' : 'var(--theme-border-subtle)',
                   color: 'var(--theme-text-main)',
                 }}
+                {...register('password')}
               />
               <button
                 type="button"
@@ -164,19 +160,26 @@ export const Login = () => {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
+            {errors.password && (
+              <p className="mt-1 text-xs text-red-500 font-medium">{errors.password.message}</p>
+            )}
           </div>
 
+          {/* Submit */}
           <button
             type="submit"
-            disabled={isLoading}
-            className="w-full mt-2 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 shadow-md"
+            disabled={isPending}
+            className="w-full mt-2 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer active:scale-95 disabled:opacity-50 shadow-md hover:brightness-95"
             style={{
-              backgroundColor: 'var(--theme-primary)',
-              color: 'var(--theme-primary-text)',
+              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
+              color: 'var(--theme-btn-text, #06110d)',
             }}
           >
-            {isLoading ? (
-              <span className="h-4 w-4 border-2 border-t-transparent rounded-full animate-spin" />
+            {isPending ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Signing in...
+              </>
             ) : (
               <>
                 <span>Sign In</span>
@@ -190,8 +193,12 @@ export const Login = () => {
           className="mt-6 pt-6 border-t text-center text-xs"
           style={{ borderColor: 'var(--theme-border-subtle)', color: 'var(--theme-text-muted)' }}
         >
-          Don't have an account?{' '}
-          <Link to="/signup" className="font-bold text-slate-900 hover:underline">
+          Don&apos;t have an account?{' '}
+          <Link
+            to="/signup"
+            className="font-bold hover:underline"
+            style={{ color: 'var(--theme-text-main)' }}
+          >
             Sign up
           </Link>
         </div>

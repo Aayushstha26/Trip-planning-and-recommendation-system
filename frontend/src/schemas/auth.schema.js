@@ -24,6 +24,13 @@ export const signUpSchema = z.object({
     }),
 })
 
+export const signUpDefaultValues = {
+  name: '',
+  email: '',
+  password: '',
+  agreeTerms: false,
+}
+
 export const loginSchema = z.object({
   email: z
     .string()
@@ -34,3 +41,8 @@ export const loginSchema = z.object({
     .string()
     .min(1, { message: 'Password is required' }),
 })
+
+export const loginDefaultValues = {
+  email: '',
+  password: '',
+}

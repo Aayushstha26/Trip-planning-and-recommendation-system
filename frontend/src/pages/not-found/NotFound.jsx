@@ -15,7 +15,11 @@ export const NotFound = () => {
       <div className="mt-8">
         <Link
           to="/"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-amber-400 text-slate-950 font-bold text-sm hover:bg-amber-300 transition-all shadow-lg shadow-amber-400/20"
+          className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl font-bold text-sm transition-all shadow-md active:scale-95 hover:brightness-95"
+          style={{
+            backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
+            color: 'var(--theme-btn-text, #06110d)',
+          }}
         >
           <Home className="h-4 w-4" />
           Back to Homepage
