@@ -1,22 +1,22 @@
-import { Link, useLocation } from 'react-router-dom'
-import { Compass } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Link, useLocation } from "react-router-dom";
+import { Compass } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const NAV_LINKS = [
-  { path: '/', label: 'Home' },
-  { path: '/explore', label: 'Explore' },
-  { path: '/planner', label: 'Trip Planner' },
-]
+  { path: "/", label: "Home" },
+  { path: "/explore", label: "Explore" },
+  { path: "/planner", label: "Trip Planner" },
+];
 
 export const Navbar = () => {
-  const location = useLocation()
+  const location = useLocation();
 
   return (
     <header
       className="sticky top-0 z-40 backdrop-blur-xl transition-all duration-300"
       style={{
-        backgroundColor: 'var(--theme-surface)',
-        borderBottom: '1px solid var(--theme-border-subtle)',
+        backgroundColor: "var(--theme-surface)",
+        borderBottom: "1px solid var(--theme-border-subtle)",
       }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -25,8 +25,8 @@ export const Navbar = () => {
           <div
             className="h-11 w-11 rounded-2xl flex items-center justify-center transition-transform group-hover:scale-105 shadow-md"
             style={{
-              backgroundColor: 'var(--theme-primary)',
-              color: 'var(--theme-primary-text)',
+              backgroundColor: "var(--theme-primary)",
+              color: "var(--theme-primary-text)",
             }}
           >
             <Compass className="h-6 w-6 stroke-[2.5]" />
@@ -34,13 +34,13 @@ export const Navbar = () => {
           <div>
             <span
               className="text-xl font-extrabold tracking-tight"
-              style={{ color: 'var(--theme-text-main)' }}
+              style={{ color: "var(--theme-text-main)" }}
             >
-              Wander<span style={{ color: 'var(--theme-primary)' }}>AI</span>
+              Wander<span style={{ color: "var(--theme-primary)" }}>AI</span>
             </span>
             <span
               className="text-[11px] block font-bold -mt-1 tracking-widest uppercase opacity-75"
-              style={{ color: 'var(--theme-text-muted)' }}
+              style={{ color: "var(--theme-text-muted)" }}
             >
               Trip Planner
             </span>
@@ -50,36 +50,38 @@ export const Navbar = () => {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-bold">
           {NAV_LINKS.map((item) => {
-            const isActive = location.pathname === item.path
+            const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 className="transition-all relative py-1 hover:opacity-100"
                 style={{
-                  color: isActive ? 'var(--theme-primary)' : 'var(--theme-text-muted)',
+                  color: isActive
+                    ? "var(--theme-primary)"
+                    : "var(--theme-text-muted)",
                 }}
               >
                 {item.label}
                 {isActive && (
                   <span
                     className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                    style={{ backgroundColor: 'var(--theme-primary)' }}
+                    style={{ backgroundColor: "var(--theme-primary)" }}
                   />
                 )}
               </Link>
-            )
+            );
           })}
         </nav>
 
         {/* Right side CTA */}
         <div className="flex items-center gap-3">
-           <Button
+          <Button
             asChild
             className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
             style={{
-              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
-              color: 'var(--theme-btn-text, #06110d)',
+              backgroundColor: "var(--theme-btn-bg, #c8ff00)",
+              color: "var(--theme-btn-text, #06110d)",
             }}
           >
             <Link to="/login">Sign In</Link>
@@ -88,8 +90,8 @@ export const Navbar = () => {
             asChild
             className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
             style={{
-              backgroundColor: 'var(--theme-btn-bg, #c8ff00)',
-              color: 'var(--theme-btn-text, #06110d)',
+              backgroundColor: "var(--theme-btn-bg, #c8ff00)",
+              color: "var(--theme-btn-text, #06110d)",
             }}
           >
             <Link to="/planner">Plan Trip</Link>
@@ -97,7 +99,7 @@ export const Navbar = () => {
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;
