@@ -8,21 +8,35 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
+const uploadOnCloudinary = async (localFilePath, folder = "user_avatars") => {
   try {
     if (!localFilePath) return null;
     const response = await cloudinary.uploader.upload(localFilePath, {
+      folder,
       resource_type: "auto",
     });
-    console.log("File uploaded to Cloudinary successfully" + response.url);
-      fs.unlink(localFilePath, (err) => {
-      if (err) console.warn("Failed to delete local file:", err);
-    });
+    console.log("File uploaded to Cloudinary successfully: " + (response.secure_url || response.url));
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
     return response;
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-    fs.unlinkSync(localFilePath);
+    if (fs.existsSync(localFilePath)) {
+      fs.unlinkSync(localFilePath);
+    }
     return null;
   }
 };
-export { uploadOnCloudinary };
+
+const deleteFromCloudinary = async (publicId) => {
+  try {
+    if (!publicId) return null;
+    return await cloudinary.uploader.destroy(publicId);
+  } catch (error) {
+    console.error("Cloudinary delete error:", error);
+    return null;
+  }
+};
+
+export { uploadOnCloudinary, deleteFromCloudinary };

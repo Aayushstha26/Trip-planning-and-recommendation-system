@@ -29,6 +29,16 @@ export const errorHandler = (err, req, res, next) => {
         message = "Token expired";
     }
 
+    // Handle Multer upload errors
+    if (err.name === "MulterError") {
+        statusCode = 400;
+        if (err.code === "LIMIT_FILE_SIZE") {
+            message = "File size exceeds the 5MB limit";
+        } else {
+            message = err.message;
+        }
+    }
+
     return res.status(statusCode).json({
         success: false,
         statusCode,

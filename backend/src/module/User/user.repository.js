@@ -4,6 +4,7 @@ const SAFE_USER_SELECT = {
     id: true,
     email: true,
     name: true,
+    avatar: true,
     role: true,
     createdAt: true,
     updatedAt: true
