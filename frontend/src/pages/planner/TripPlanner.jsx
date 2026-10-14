@@ -77,7 +77,7 @@ export const TripPlanner = () => {
             type="button"
             variant="outline"
             onClick={() => setIsJoinModalOpen(true)}
-            className="rounded-xl font-bold cursor-pointer"
+            className="rounded-xl font-bold cursor-pointer text-white"
           >
             <KeyRound className="h-4 w-4 mr-1.5" />
             Join with Code

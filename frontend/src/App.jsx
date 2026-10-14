@@ -6,15 +6,23 @@ import { Toaster } from 'sonner'
 import { store } from './store'
 import { queryClient } from './config/queryClient'
 import { AppRoutes } from './router/AppRoutes'
+import { useCurrentUser } from './hooks/useAuth'
+
+function AuthInitializer({ children }) {
+  useCurrentUser()
+  return children
+}
 
 function App() {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <AuthInitializer>
           <BrowserRouter>
             <AppRoutes />
             <Toaster position="top-right" richColors closeButton />
           </BrowserRouter>
+        </AuthInitializer>
         {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       </QueryClientProvider>
     </Provider>

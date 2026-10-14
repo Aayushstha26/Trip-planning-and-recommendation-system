@@ -17,7 +17,9 @@ apiClient.interceptors.response.use(
     const status = error.response ? error.response.status : null
     const requestUrl = error.config?.url || ''
     const isAuthEndpoint =
-      requestUrl.includes('/users/login') || requestUrl.includes('/users/register')
+      requestUrl.includes('/users/login') ||
+      requestUrl.includes('/users/register') ||
+      requestUrl.includes('/users/me')
     const isLoginPage = window.location.pathname === '/login'
 
     if (status === 401 && !isAuthEndpoint && !isLoginPage) {
