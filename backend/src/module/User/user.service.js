@@ -1,3 +1,4 @@
+import fs from "fs";
 import bcrypt from "bcryptjs";
 import { userRepository } from "./user.repository.js";
 import ApiError from "../../common/utils/apiError.js";
@@ -7,17 +8,30 @@ import {
     verifyRefreshToken
 } from "../../common/utils/jwt.js";
 import { Role } from "../../generated/prisma/client.js";
+import { uploadOnCloudinary } from "../../common/utils/cloudinary.js";
 
 export const userServices = {
-    register: async (email, name, password, role ) => {
+    register: async (email, name, password, role, avatarLocalPath) => {
         if (!email || !name || !password) {
+            if (avatarLocalPath && fs.existsSync(avatarLocalPath)) {
+                fs.unlinkSync(avatarLocalPath);
+            }
             throw new ApiError("All fields (email, name, password) are required", 400);
         }
 
         const normalizedEmail = email.toLowerCase().trim();
         const existingUser = await userRepository.getUserByEmail(normalizedEmail);
         if (existingUser) {
+            if (avatarLocalPath && fs.existsSync(avatarLocalPath)) {
+                fs.unlinkSync(avatarLocalPath);
+            }
             throw new ApiError("User with this email already exists", 409);
+        }
+
+        let avatarUrl = null;
+        if (avatarLocalPath) {
+            const uploadResult = await uploadOnCloudinary(avatarLocalPath, "user_avatars");
+            avatarUrl = uploadResult?.secure_url || uploadResult?.url || null;
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -27,7 +41,8 @@ export const userServices = {
                 email: normalizedEmail,
                 name: name.trim(),
                 password: hashedPassword,
-                role: role || Role.USER
+                role: role || Role.USER,
+                avatar: avatarUrl
             });
             return user;
         } catch (error) {
@@ -122,18 +137,62 @@ export const userServices = {
         return user;
     },
 
-    updateProfile: async (id, data) => {
+    updateProfile: async (id, data = {}, avatarLocalPath) => {
+        const existingUser = await userRepository.getUserById(id);
+        if (!existingUser) {
+            if (avatarLocalPath && fs.existsSync(avatarLocalPath)) {
+                fs.unlinkSync(avatarLocalPath);
+            }
+            throw new ApiError("User not found", 404);
+        }
+
+        const updatePayload = {};
+        if (data.name !== undefined && data.name.trim()) {
+            updatePayload.name = data.name.trim();
+        }
+
+        if (avatarLocalPath) {
+            const uploadResult = await uploadOnCloudinary(avatarLocalPath, "user_avatars");
+            if (uploadResult?.secure_url) {
+                updatePayload.avatar = uploadResult.secure_url;
+            }
+        }
+
+        if (Object.keys(updatePayload).length === 0) {
+            throw new ApiError("At least one field (name or avatar) must be provided for update", 400);
+        }
+
+        return await userRepository.updateUserData(updatePayload, id);
+    },
+
+    updateAvatar: async (id, avatarLocalPath) => {
+        if (!avatarLocalPath) {
+            throw new ApiError("Avatar image file is required", 400);
+        }
+
+        const existingUser = await userRepository.getUserById(id);
+        if (!existingUser) {
+            if (fs.existsSync(avatarLocalPath)) {
+                fs.unlinkSync(avatarLocalPath);
+            }
+            throw new ApiError("User not found", 404);
+        }
+
+        const uploadResult = await uploadOnCloudinary(avatarLocalPath, "user_avatars");
+        if (!uploadResult?.secure_url) {
+            throw new ApiError("Failed to upload avatar to Cloudinary", 500);
+        }
+
+        return await userRepository.updateUserData({ avatar: uploadResult.secure_url }, id);
+    },
+
+    removeAvatar: async (id) => {
         const existingUser = await userRepository.getUserById(id);
         if (!existingUser) {
             throw new ApiError("User not found", 404);
         }
 
-        const updatePayload = {};
-        if (data.name !== undefined) {
-            updatePayload.name = data.name.trim();
-        }
-
-        return await userRepository.updateUserData(updatePayload, id);
+        return await userRepository.updateUserData({ avatar: null }, id);
     },
 
     changePassword: async (id, currentPassword, newPassword) => {

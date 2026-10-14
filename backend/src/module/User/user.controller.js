@@ -1,6 +1,6 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
 import ApiError from "../../common/utils/apiError.js";
-import { userServices } from "./user.services.js";
+import { userServices } from "./user.service.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -21,7 +21,8 @@ const REFRESH_COOKIE_OPTIONS = {
 const userController = {
     register: asyncHandler(async (req, res) => {
         const { email, name, password, role } = req.body;
-        const user = await userServices.register(email, name, password, role);
+        const avatarLocalPath = req.file?.path;
+        const user = await userServices.register(email, name, password, role, avatarLocalPath);
 
         return res.status(201).json({
             success: true,
@@ -88,11 +89,35 @@ const userController = {
 
     updateProfile: asyncHandler(async (req, res) => {
         const userId = req.user.id;
-        const updatedUser = await userServices.updateProfile(userId, req.body);
+        const avatarLocalPath = req.file?.path;
+        const updatedUser = await userServices.updateProfile(userId, req.body, avatarLocalPath);
 
         return res.status(200).json({
             success: true,
             message: "Profile updated successfully",
+            user: updatedUser
+        });
+    }),
+
+    updateAvatar: asyncHandler(async (req, res) => {
+        const userId = req.user.id;
+        const avatarLocalPath = req.file?.path;
+        const updatedUser = await userServices.updateAvatar(userId, avatarLocalPath);
+
+        return res.status(200).json({
+            success: true,
+            message: "Avatar updated successfully",
+            user: updatedUser
+        });
+    }),
+
+    removeAvatar: asyncHandler(async (req, res) => {
+        const userId = req.user.id;
+        const updatedUser = await userServices.removeAvatar(userId);
+
+        return res.status(200).json({
+            success: true,
+            message: "Avatar removed successfully",
             user: updatedUser
         });
     }),

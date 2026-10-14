@@ -2,6 +2,7 @@ import { Router } from "express";
 import userController from "../../module/User/user.controller.js";
 import { authenticate, authorizeRoles } from "../../common/middleware/auth.middleware.js";
 import { validate } from "../../common/middleware/validate.middleware.js";
+import { upload } from "../../common/middleware/multer.middleware.js";
 import {
     registerSchema,
     loginSchema,
@@ -15,14 +16,16 @@ import {
 const router = Router();
 
 // Public routes
-router.post("/register", validate(registerSchema), userController.register);
+router.post("/register", upload.single("avatar"), validate(registerSchema), userController.register);
 router.post("/login", validate(loginSchema), userController.login);
 router.post("/refresh-token", validate(refreshTokenSchema), userController.refreshAccessToken);
 
 // Protected routes (require valid JWT access token)
 router.post("/logout", authenticate, userController.logout);
 router.get("/me", authenticate, userController.getCurrentUser);
-router.patch("/me", authenticate, validate(updateProfileSchema), userController.updateProfile);
+router.patch("/me", authenticate, upload.single("avatar"), validate(updateProfileSchema), userController.updateProfile);
+router.patch("/avatar", authenticate, upload.single("avatar"), userController.updateAvatar);
+router.delete("/avatar", authenticate, userController.removeAvatar);
 router.patch("/change-password", authenticate, validate(changePasswordSchema), userController.changePassword);
 
 router.get("/", authenticate, authorizeRoles("ADMIN"), validate(getUsersQuerySchema, "query"), userController.getAllUsers);

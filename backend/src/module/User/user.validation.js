@@ -14,7 +14,8 @@ export const registerSchema = z.object({
     }).max(100, {
         message: "Password cannot exceed 100 characters"
     }),
-    role: z.enum(["USER", "ADMIN"]).optional()
+    role: z.enum(["USER", "ADMIN"]).optional(),
+    avatar: z.string().optional()
 });
 
 export const loginSchema = z.object({
@@ -36,8 +37,6 @@ export const updateProfileSchema = z.object({
     }).max(50, {
         message: "Name cannot exceed 50 characters"
     }).optional()
-}).refine(data => data.name !== undefined, {
-    message: "At least one field (name) must be provided for update"
 });
 
 export const changePasswordSchema = z.object({
