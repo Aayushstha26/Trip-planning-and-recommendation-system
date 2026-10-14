@@ -1,5 +1,5 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import groupService from "./group.services.js";
+import groupService from "./group.service.js";
 
 export const createGroup = asyncHandler(async (req, res) => {
   const group = await groupService.createGroup(req.user.id, req.body);

@@ -1,6 +1,6 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
 import ApiError from "../../common/utils/apiError.js";
-import { userServices } from "./user.services.js";
+import { userServices } from "./user.service.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
