@@ -3,17 +3,16 @@ import { cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-md border border-slate-200 px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-slate-950 focus:ring-offset-2',
+  'inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors',
   {
     variants: {
       variant: {
-        default:
-          'border-transparent bg-slate-900 text-white shadow hover:bg-slate-900/80',
-        secondary:
-          'border-transparent bg-slate-100 text-slate-900 hover:bg-slate-100/80',
-        destructive:
-          'border-transparent bg-red-500 text-white shadow hover:bg-red-500/80',
-        outline: 'text-slate-950',
+        default: 'border border-transparent bg-slate-900 text-white',
+        secondary: 'border border-transparent bg-slate-100 text-slate-900',
+        destructive: 'border border-transparent bg-red-500 text-white',
+        outline: 'border text-slate-950',
+        // Theme-aware variant — uses CSS variables
+        theme: '',
       },
     },
     defaultVariants: {
@@ -22,8 +21,24 @@ const badgeVariants = cva(
   }
 )
 
-function Badge({ className, variant, ...props }) {
-  return <div className={cn(badgeVariants({ variant }), className)} {...props} />
+function Badge({ className, variant, style, ...props }) {
+  const themeStyle =
+    variant === 'theme'
+      ? {
+          background: 'var(--theme-elevated)',
+          color: 'var(--theme-primary)',
+          border: '1px solid var(--theme-border)',
+          ...style,
+        }
+      : style
+
+  return (
+    <div
+      className={cn(badgeVariants({ variant }), className)}
+      style={themeStyle}
+      {...props}
+    />
+  )
 }
 
 export { Badge, badgeVariants }

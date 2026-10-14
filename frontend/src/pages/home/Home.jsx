@@ -1,12 +1,21 @@
-import React from 'react'
+import React from 'react';
+import HeroSection from '@/components/home/HeroSection';
+import FeaturesSection from '@/components/home/FeaturesSection';
+import HowItWorksSection from '@/components/home/HowItWorksSection';
+import DestinationsSection from '@/components/home/DestinationsSection';
+import AIBannerSection from '@/components/home/AIBannerSection';
 
-function Home() {
+export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f5f5f5]">
-      <h1 className="text-4xl font-bold text-[#333]">Home</h1>
-      <p className="text-lg text-[#666]">Welcome to our trip planning and recommendation system</p>
+    <div
+      className="min-h-screen overflow-x-hidden"
+      style={{ background: 'var(--theme-bg)', color: 'var(--theme-text-main)' }}
+    >
+      <HeroSection />
+      <FeaturesSection />
+      <HowItWorksSection />
+      <DestinationsSection />
+      <AIBannerSection />
     </div>
-  )
+  );
 }
-
-export default Home
