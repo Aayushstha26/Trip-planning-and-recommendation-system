@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { MainLayout } from '../layout/MainLayout';
 import DashboardLayout from '../layout/DashboardLayout';
 import Home from '../pages/home/Home';
@@ -13,6 +13,11 @@ import DashboardPreferences from '../pages/dashboard/DashboardPreferences';
 import DashboardProfile from '../pages/dashboard/DashboardProfile';
 import NotFound from '../pages/not-found/NotFound';
 
+const LegacyTripDetailsRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={`/dashboard/planner/${id}`} replace />;
+};
+
 export const AppRoutes = () => {
   return (
     <Routes>
@@ -23,18 +28,22 @@ export const AppRoutes = () => {
       {/* ── Public Routes with Navbar/Footer ── */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
-        <Route path="planner" element={<TripPlanner />} />
-        <Route path="planner/:id" element={<TripDetails />} />
       </Route>
 
       {/* ── Dashboard Routes (collapsible sidebar layout, no Navbar/Footer) ── */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<DashboardOverview />} />
         <Route path="trips" element={<DashboardTrips />} />
+        <Route path="planner" element={<TripPlanner />} />
+        <Route path="planner/:id" element={<TripDetails />} />
         <Route path="explore" element={<DashboardExplore />} />
         <Route path="preferences" element={<DashboardPreferences />} />
         <Route path="profile" element={<DashboardProfile />} />
       </Route>
+
+      {/* ── Legacy /planner redirects ── */}
+      <Route path="/planner" element={<Navigate to="/dashboard/planner" replace />} />
+      <Route path="/planner/:id" element={<LegacyTripDetailsRedirect />} />
 
       {/* ── 404 ── */}
       <Route path="*" element={<NotFound />} />

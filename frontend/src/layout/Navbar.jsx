@@ -8,7 +8,6 @@ import { toast } from "sonner";
 const NAV_LINKS = [
   { path: "/", label: "Home" },
   { path: "/explore", label: "Explore" },
-  { path: "/planner", label: "Trip Planner" },
 ];
 
 export const Navbar = () => {
@@ -75,9 +74,7 @@ export const Navbar = () => {
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-bold">
           {NAV_LINKS.map((item) => {
-            const isActive =
-              location.pathname === item.path ||
-              (item.path === "/planner" && location.pathname === "/dashboard");
+            const isActive = location.pathname === item.path;
             return (
               <Link
                 key={item.path}
@@ -113,7 +110,7 @@ export const Navbar = () => {
                   color: "var(--theme-btn-text, #06110d)",
                 }}
               >
-                <Link to="/planner">Plan Trip</Link>
+                <Link to="/dashboard/planner">Plan Trip</Link>
               </Button>
 
               {/* Profile Link -> Leads directly to Dashboard */}
@@ -191,7 +188,7 @@ export const Navbar = () => {
                   color: "var(--theme-btn-text, #06110d)",
                 }}
               >
-                <Link to="/planner">Plan Trip</Link>
+                <Link to="/dashboard/planner">Plan Trip</Link>
               </Button>
             </>
           )}

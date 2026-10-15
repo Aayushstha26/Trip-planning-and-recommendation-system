@@ -12,7 +12,7 @@ export const CreateGroupModal = ({ isOpen, onClose }) => {
   const { mutate: createGroup, isPending } = useCreateGroup({
     onSuccess: (data) => {
       toast.success(`Group ${data.name} created successfully!`);
-      console.log(data);
+      // console.log(data);
       reset();
       onClose();
     },

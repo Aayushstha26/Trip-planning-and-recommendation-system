@@ -163,7 +163,7 @@ export const TripCard = ({ group, currentUser }) => {
             color: "var(--theme-btn-text, #06110d)",
           }}
         >
-          <Link to={`/planner/${group.id}`}>
+          <Link to={`/dashboard/planner/${group.id}`}>
             <span>View Trip & Members</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </Link>
