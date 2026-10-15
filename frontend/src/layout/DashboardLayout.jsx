@@ -32,28 +32,6 @@ export default function DashboardLayout() {
 
             {/* Right: Search, New Trip, Bell, Avatar */}
             <div className="flex items-center gap-2 ml-auto">
-              {/* Search */}
-              <button
-                className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs border cursor-pointer transition-all hover:opacity-80"
-                style={{
-                  background: 'var(--theme-elevated)',
-                  borderColor: 'var(--theme-border)',
-                  color: 'var(--theme-text-muted)',
-                }}
-              >
-                <Search className="w-3.5 h-3.5" />
-                <span>Search…</span>
-              </button>
-
-              {/* New Trip CTA */}
-              <NavLink
-                to="/planner"
-                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all hover:brightness-95"
-                style={{ background: 'var(--theme-btn-bg)', color: 'var(--theme-btn-text)' }}
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>New Trip</span>
-              </NavLink>
 
               {/* Bell */}
               <button

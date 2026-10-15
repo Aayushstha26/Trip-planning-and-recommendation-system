@@ -31,7 +31,7 @@ export const TripDetails = () => {
   const { id: groupId } = useParams();
   const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.auth.user);
-  console.log(currentUser);
+  // console.log(currentUser);
   const [copiedCode, setCopiedCode] = useState(false);
   const [memberToRemove, setMemberToRemove] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -41,7 +41,7 @@ export const TripDetails = () => {
   const { mutate: deleteGroup, isPending: isDeleting } = useDeleteGroup({
     onSuccess: () => {
       toast.success("Trip deleted successfully");
-      navigate("/planner");
+      navigate("/dashboard/planner");
     },
     onError: (err) => {
       toast.error(err?.message || "Failed to delete trip");
@@ -51,7 +51,7 @@ export const TripDetails = () => {
   const { mutate: leaveGroup, isPending: isLeaving } = useLeaveGroup({
     onSuccess: () => {
       toast.success("You left the trip successfully");
-      navigate("/planner");
+      navigate("/dashboard/planner");
     },
     onError: (err) => {
       toast.error(err?.message || "Failed to leave trip");
@@ -125,7 +125,7 @@ export const TripDetails = () => {
         </p>
         <div className="mt-6">
           <Button asChild variant="outline" className="rounded-xl font-bold">
-            <Link to="/planner">
+            <Link to="/dashboard/planner">
               <ArrowLeft className="h-4 w-4 mr-1.5" />
               Back to Trip Planner
             </Link>
@@ -144,7 +144,7 @@ export const TripDetails = () => {
       {/* Back Link */}
       <div className="mb-6">
         <Link
-          to="/planner"
+          to="/dashboard/planner"
           className="inline-flex items-center gap-1.5 text-xs font-bold transition-colors hover:underline"
           style={{ color: "var(--theme-text-muted)" }}
         >
