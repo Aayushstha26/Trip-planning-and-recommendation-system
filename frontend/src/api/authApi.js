@@ -13,6 +13,9 @@ export const authApi = {
   logout: async () => {
     return await apiClient.post('/users/logout')
   },
+  refreshToken: async () => {
+    return await apiClient.post('/users/refresh-token', {})
+  },
 }
 
 export default authApi

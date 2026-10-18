@@ -23,8 +23,8 @@ apiClient.interceptors.response.use(
     const isLoginPage = window.location.pathname === '/login'
 
     if (status === 401 && !isAuthEndpoint && !isLoginPage) {
-      window.location.href = '/login'
-    }
+          window.location.href = '/login'
+        }
 
     const message =
       error.response?.data?.message ||
