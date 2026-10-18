@@ -4,8 +4,8 @@ import {
   buildMemberVectors,
   buildDestinationVectors,
   weightedCosineSimilarity,
-} from "./cosineSimilarity.js";
-import { aggregateGroupScore } from "./leastMisery.js";
+} from "../../algorithm/cosineSimilarity.js";
+import { aggregateGroupScore } from "../../algorithm/leastMisery.js";
 
 const DIFFICULTY_LEVEL = { EASY: 1, MODERATE: 2, HARD: 3 };
 
