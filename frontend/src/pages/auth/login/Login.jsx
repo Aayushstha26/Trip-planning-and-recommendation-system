@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'sonner'
@@ -9,12 +9,15 @@ import { useLogin } from '@/hooks/useAuth'
 
 export const Login = () => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [showPassword, setShowPassword] = useState(false)
+
+  const destination = location.state?.from || '/'
 
   const { mutate: loginUser, isPending } = useLogin({
     onSuccess: (data) => {
       toast.success(data?.message || 'Welcome back!')
-      navigate('/')
+      navigate(destination, { replace: true })
     },
     onError: (err) => {
       toast.error(err?.message || 'Invalid email or password. Please try again.')
