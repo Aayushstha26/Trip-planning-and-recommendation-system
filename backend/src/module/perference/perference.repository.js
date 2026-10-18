@@ -43,4 +43,3 @@ export const preferenceRepository = {
   },
 };
 
-export default preferenceRepository;

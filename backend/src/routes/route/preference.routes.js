@@ -7,16 +7,16 @@ import {
 } from "../../module/perference/preference.validation.js";
 import { preferenceController } from "../../module/perference/preference.controller.js";
 
-const preferenceRouter = Router();
+const router = Router();
 
 
-preferenceRouter.use(authenticate);
-preferenceRouter.post(
+router.use(authenticate);
+router.post(
   "/",
   validate(upsertPreferenceSchema),
   preferenceController.savePreference
 );
-preferenceRouter.post(
+router.post(
   "/:groupId",
   validate(groupIdParamSchema, "params"),
   validate(upsertPreferenceSchema),
@@ -24,33 +24,33 @@ preferenceRouter.post(
 );
 
 
-preferenceRouter.get(
+router.get(
   "/:groupId/my",
   validate(groupIdParamSchema, "params"),
   preferenceController.getMyPreference
 );
 
-preferenceRouter.get(
+router.get(
   "/:groupId/group",
   validate(groupIdParamSchema, "params"),
   preferenceController.getGroupPreferences
 );
-preferenceRouter.get(
+router.get(
   "/:groupId",
   validate(groupIdParamSchema, "params"),
   preferenceController.getGroupPreferences
 );
 
 
-preferenceRouter.delete(
+router.delete(
   "/:groupId/my",
   validate(groupIdParamSchema, "params"),
   preferenceController.deleteMyPreference
 );
-preferenceRouter.delete(
+router.delete(
   "/:groupId",
   validate(groupIdParamSchema, "params"),
   preferenceController.deleteMyPreference
 );
 
-export default preferenceRouter;
+export default router;
