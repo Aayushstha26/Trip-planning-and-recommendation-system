@@ -188,7 +188,9 @@ export const Navbar = () => {
                   color: "var(--theme-btn-text, #06110d)",
                 }}
               >
-                <Link to="/login" state={{ from: "/dashboard/planner" }}>Plan Trip</Link>
+                <Link to="/login" state={{ from: "/dashboard/planner" }}>
+                  Plan Trip
+                </Link>
               </Button>
             </>
           )}

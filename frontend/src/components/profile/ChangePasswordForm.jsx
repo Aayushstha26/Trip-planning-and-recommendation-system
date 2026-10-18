@@ -40,7 +40,9 @@ export const ChangePasswordForm = () => {
 
   const { mutate: changePassword, isPending } = useChangePassword({
     onSuccess: () => {
-      toast.success("Password changed successfully! Keep your credentials safe.");
+      toast.success(
+        "Password changed successfully! Keep your credentials safe.",
+      );
       reset();
     },
     onError: (err) => {
@@ -75,7 +77,10 @@ export const ChangePasswordForm = () => {
           >
             Security & Password
           </h2>
-          <p className="text-xs sm:text-sm mt-1" style={{ color: "var(--theme-text-muted)" }}>
+          <p
+            className="text-xs sm:text-sm mt-1"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             Ensure your account is using a long, random password to stay safe.
           </p>
         </div>
@@ -102,7 +107,10 @@ export const ChangePasswordForm = () => {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <Lock className="h-4 w-4 opacity-50" style={{ color: "var(--theme-text-muted)" }} />
+              <Lock
+                className="h-4 w-4 opacity-50"
+                style={{ color: "var(--theme-text-muted)" }}
+              />
             </div>
             <Input
               id="currentPassword"
@@ -113,7 +121,9 @@ export const ChangePasswordForm = () => {
               className="pl-10 pr-10 h-11 rounded-2xl border font-medium text-sm"
               style={{
                 backgroundColor: "var(--theme-bg)",
-                borderColor: errors.currentPassword ? "red" : "var(--theme-border-subtle)",
+                borderColor: errors.currentPassword
+                  ? "red"
+                  : "var(--theme-border-subtle)",
                 color: "var(--theme-text-main)",
               }}
             />
@@ -122,7 +132,11 @@ export const ChangePasswordForm = () => {
               onClick={() => setShowCurrent(!showCurrent)}
               className="absolute inset-y-0 right-0 pr-3.5 flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
             >
-              {showCurrent ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showCurrent ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.currentPassword && (
@@ -144,7 +158,10 @@ export const ChangePasswordForm = () => {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <Lock className="h-4 w-4 opacity-50" style={{ color: "var(--theme-text-muted)" }} />
+              <Lock
+                className="h-4 w-4 opacity-50"
+                style={{ color: "var(--theme-text-muted)" }}
+              />
             </div>
             <Input
               id="newPassword"
@@ -155,7 +172,9 @@ export const ChangePasswordForm = () => {
               className="pl-10 pr-10 h-11 rounded-2xl border font-medium text-sm"
               style={{
                 backgroundColor: "var(--theme-bg)",
-                borderColor: errors.newPassword ? "red" : "var(--theme-border-subtle)",
+                borderColor: errors.newPassword
+                  ? "red"
+                  : "var(--theme-border-subtle)",
                 color: "var(--theme-text-main)",
               }}
             />
@@ -164,7 +183,11 @@ export const ChangePasswordForm = () => {
               onClick={() => setShowNew(!showNew)}
               className="absolute inset-y-0 right-0 pr-3.5 flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
             >
-              {showNew ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showNew ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.newPassword && (
@@ -183,20 +206,35 @@ export const ChangePasswordForm = () => {
                 borderColor: "var(--theme-border-subtle)",
               }}
             >
-              <p className="font-semibold" style={{ color: "var(--theme-text-main)" }}>
+              <p
+                className="font-semibold"
+                style={{ color: "var(--theme-text-main)" }}
+              >
                 Password Requirements:
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
-                <span className={`flex items-center gap-1.5 ${isMinLength ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}>
-                  <Check className={`w-3.5 h-3.5 ${isMinLength ? "opacity-100" : "opacity-30"}`} />
+                <span
+                  className={`flex items-center gap-1.5 ${isMinLength ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}
+                >
+                  <Check
+                    className={`w-3.5 h-3.5 ${isMinLength ? "opacity-100" : "opacity-30"}`}
+                  />
                   8+ characters
                 </span>
-                <span className={`flex items-center gap-1.5 ${hasLetter ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}>
-                  <Check className={`w-3.5 h-3.5 ${hasLetter ? "opacity-100" : "opacity-30"}`} />
+                <span
+                  className={`flex items-center gap-1.5 ${hasLetter ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}
+                >
+                  <Check
+                    className={`w-3.5 h-3.5 ${hasLetter ? "opacity-100" : "opacity-30"}`}
+                  />
                   Includes letters
                 </span>
-                <span className={`flex items-center gap-1.5 ${hasNumber ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}>
-                  <Check className={`w-3.5 h-3.5 ${hasNumber ? "opacity-100" : "opacity-30"}`} />
+                <span
+                  className={`flex items-center gap-1.5 ${hasNumber ? "text-emerald-500 font-bold" : "text-muted-foreground"}`}
+                >
+                  <Check
+                    className={`w-3.5 h-3.5 ${hasNumber ? "opacity-100" : "opacity-30"}`}
+                  />
                   Includes number
                 </span>
               </div>
@@ -215,7 +253,10 @@ export const ChangePasswordForm = () => {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <Lock className="h-4 w-4 opacity-50" style={{ color: "var(--theme-text-muted)" }} />
+              <Lock
+                className="h-4 w-4 opacity-50"
+                style={{ color: "var(--theme-text-muted)" }}
+              />
             </div>
             <Input
               id="confirmPassword"
@@ -226,7 +267,9 @@ export const ChangePasswordForm = () => {
               className="pl-10 pr-10 h-11 rounded-2xl border font-medium text-sm"
               style={{
                 backgroundColor: "var(--theme-bg)",
-                borderColor: errors.confirmPassword ? "red" : "var(--theme-border-subtle)",
+                borderColor: errors.confirmPassword
+                  ? "red"
+                  : "var(--theme-border-subtle)",
                 color: "var(--theme-text-main)",
               }}
             />
@@ -235,7 +278,11 @@ export const ChangePasswordForm = () => {
               onClick={() => setShowConfirm(!showConfirm)}
               className="absolute inset-y-0 right-0 pr-3.5 flex items-center cursor-pointer text-muted-foreground hover:text-foreground"
             >
-              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showConfirm ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
             </button>
           </div>
           {errors.confirmPassword && (

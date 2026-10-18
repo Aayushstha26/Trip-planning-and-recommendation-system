@@ -73,7 +73,10 @@ export const ProfileInfoForm = ({ user }) => {
         >
           Personal Information
         </h2>
-        <p className="text-xs sm:text-sm mt-1" style={{ color: "var(--theme-text-muted)" }}>
+        <p
+          className="text-xs sm:text-sm mt-1"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
           Update your public profile display name and view account info.
         </p>
       </div>
@@ -90,7 +93,10 @@ export const ProfileInfoForm = ({ user }) => {
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <User className="h-4 w-4 opacity-50" style={{ color: "var(--theme-text-muted)" }} />
+              <User
+                className="h-4 w-4 opacity-50"
+                style={{ color: "var(--theme-text-muted)" }}
+              />
             </div>
             <Input
               id="profile-name"
@@ -136,7 +142,10 @@ export const ProfileInfoForm = ({ user }) => {
           </div>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <Mail className="h-4 w-4 opacity-40" style={{ color: "var(--theme-text-muted)" }} />
+              <Mail
+                className="h-4 w-4 opacity-40"
+                style={{ color: "var(--theme-text-muted)" }}
+              />
             </div>
             <Input
               id="profile-email"
@@ -152,7 +161,10 @@ export const ProfileInfoForm = ({ user }) => {
               }}
             />
           </div>
-          <p className="text-[11px]" style={{ color: "var(--theme-text-muted)" }}>
+          <p
+            className="text-[11px]"
+            style={{ color: "var(--theme-text-muted)" }}
+          >
             Your email is used for logging into your account.
           </p>
         </div>
@@ -176,10 +188,16 @@ export const ProfileInfoForm = ({ user }) => {
               <ShieldCheck className="w-4 h-4 text-emerald-500" />
             </div>
             <div>
-              <p className="text-xs font-bold" style={{ color: "var(--theme-text-main)" }}>
+              <p
+                className="text-xs font-bold"
+                style={{ color: "var(--theme-text-main)" }}
+              >
                 Account Role: {user?.role || "USER"}
               </p>
-              <p className="text-[11px]" style={{ color: "var(--theme-text-muted)" }}>
+              <p
+                className="text-[11px]"
+                style={{ color: "var(--theme-text-muted)" }}
+              >
                 Account ID #{user?.id || ""}
               </p>
             </div>

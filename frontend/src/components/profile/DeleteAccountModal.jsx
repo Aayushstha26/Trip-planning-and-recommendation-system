@@ -12,7 +12,9 @@ export const DeleteAccountModal = ({ isOpen, onClose, userId, userEmail }) => {
 
   const { mutate: deleteAccount, isPending } = useDeleteAccount({
     onSuccess: () => {
-      toast.success("Your account has been deleted. We are sorry to see you go!");
+      toast.success(
+        "Your account has been deleted. We are sorry to see you go!",
+      );
       navigate("/login");
     },
     onError: (err) => {
@@ -60,9 +62,13 @@ export const DeleteAccountModal = ({ isOpen, onClose, userId, userEmail }) => {
           </div>
         </div>
 
-        <p className="text-xs leading-relaxed mb-4" style={{ color: "var(--theme-text-muted)" }}>
-          Deleting your account will permanently remove your profile, memberships in travel groups,
-          and trip recommendations associated with <strong>{userEmail}</strong>.
+        <p
+          className="text-xs leading-relaxed mb-4"
+          style={{ color: "var(--theme-text-muted)" }}
+        >
+          Deleting your account will permanently remove your profile,
+          memberships in travel groups, and trip recommendations associated with{" "}
+          <strong>{userEmail}</strong>.
         </p>
 
         <div
@@ -77,7 +83,9 @@ export const DeleteAccountModal = ({ isOpen, onClose, userId, userEmail }) => {
             className="block text-xs font-semibold"
             style={{ color: "var(--theme-text-main)" }}
           >
-            Type <span className="font-mono text-red-500 font-bold">DELETE</span> to confirm:
+            Type{" "}
+            <span className="font-mono text-red-500 font-bold">DELETE</span> to
+            confirm:
           </label>
           <Input
             id="delete-confirm-input"
