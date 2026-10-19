@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function DashboardOverview() {
+export default function Overview() {
   return (
     <div className="p-6 sm:p-8">
       <h1 className="text-xl font-bold mb-1" style={{ color: 'var(--theme-text-main)' }}>Overview</h1>

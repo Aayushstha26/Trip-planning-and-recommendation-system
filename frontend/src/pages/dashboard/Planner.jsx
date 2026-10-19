@@ -1,229 +1,185 @@
-import { useState } from "react";
-import {
-  Compass,
-  Plus,
-  Search,
-  Sparkles,
-  KeyRound,
-  Loader2,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useMyGroups } from "@/hooks/useGroup";
+import { useState, useMemo } from "react";
+import { toast } from "sonner";
+import { useMyGroups, useDeleteGroup, useLeaveGroup } from "@/hooks/useGroup";
 import { useAppSelector } from "@/store/hooks";
 import {
+  PlannerHeader,
+  StatsBar,
+  FilterBar,
   TripCard,
+  TripListState,
+  LeaveTripDialog,
   CreateGroupModal,
   JoinGroupModal,
+  DeleteGroupDialog,
 } from "@/components/planner";
 
-/**
- * TripPlanner Dashboard Page
- * Main view for managing travel groups, creating new trips, and joining existing trips.
- */
-export const TripPlanner = () => {
-
+export const Planner = () => {
   const currentUser = useAppSelector((state) => state.auth.user);
 
+  // Modal state
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [groupToDelete, setGroupToDelete] = useState(null);
+  const [groupToLeave, setGroupToLeave] = useState(null);
+
+  // Filters & Search
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [copiedId, setCopiedId] = useState(null);
 
-  // FETCH USER'S TRIPS
-  const { data: groups = [], isLoading } = useMyGroups();
+  // Data
+  const { data: groups = [], isLoading, isError, refetch } = useMyGroups();
 
-  const filteredGroups = groups.filter((group) =>
-    group.name?.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+  const { mutate: deleteGroup, isPending: isDeleting } = useDeleteGroup({
+    onSuccess: () => {
+      toast.success("Trip deleted successfully");
+      setGroupToDelete(null);
+    },
+    onError: (err) => toast.error(err?.message || "Failed to delete trip"),
+  });
+
+  const { mutate: leaveGroup, isPending: isLeaving } = useLeaveGroup({
+    onSuccess: () => {
+      toast.success("You have left the trip");
+      setGroupToLeave(null);
+    },
+    onError: (err) => toast.error(err?.message || "Failed to leave trip"),
+  });
+
+  const handleCopyCode = (e, inviteCode, groupId) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (!inviteCode) return;
+    navigator.clipboard.writeText(inviteCode);
+    setCopiedId(groupId);
+    toast.success("Invite code copied to clipboard!");
+    setTimeout(() => setCopiedId(null), 2500);
+  };
+
+  // Quick stats
+  const stats = useMemo(() => {
+    const total = groups.length;
+    const organizing = groups.filter((g) => g.ownerId === currentUser?.id).length;
+    const joined = total - organizing;
+    const withDestination = groups.filter((g) =>
+      Boolean(g.destinationId || g.destination),
+    ).length;
+    return { total, organizing, joined, withDestination };
+  }, [groups, currentUser?.id]);
+
+  // Filtered + sorted list
+  const filteredGroups = useMemo(() => {
+    let result = [...groups];
+
+    if (activeFilter === "organizing") {
+      result = result.filter((g) => g.ownerId === currentUser?.id);
+    } else if (activeFilter === "joined") {
+      result = result.filter((g) => g.ownerId !== currentUser?.id);
+    } else if (activeFilter === "upcoming") {
+      const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      result = result.filter((g) => {
+        if (!g.startDate) return false;
+        const end = g.endDate ? new Date(g.endDate) : new Date(g.startDate);
+        return end >= now;
+      });
+    } else if (activeFilter === "planning") {
+      result = result.filter((g) => !g.destinationId && !g.destination);
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (g) =>
+          g.name?.toLowerCase().includes(q) ||
+          g.destination?.name?.toLowerCase().includes(q) ||
+          g.destination?.region?.toLowerCase().includes(q) ||
+          g.inviteCode?.toLowerCase().includes(q),
+      );
+    }
+
+    result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return result;
+  }, [groups, activeFilter, searchQuery, currentUser?.id]);
+
+  const hasFilters = Boolean(searchQuery || activeFilter !== "all");
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 transition-colors">
-      {/* Page Header */}
-      <div
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b"
-        style={{ borderColor: "var(--theme-border-subtle)" }}
-      >
-        <div>
-          <div
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold mb-3 shadow-sm"
-            style={{
-              backgroundColor: "var(--theme-elevated)",
-              color: "var(--theme-text-main)",
-            }}
-          >
-            <Sparkles
-              className="h-3.5 w-3.5"
-              style={{ color: "var(--theme-border-highlight)" }}
-            />
-            <span>Collaborative Travel Hub</span>
-          </div>
-          <h1
-            className="text-3xl sm:text-4xl font-extrabold tracking-tight"
-            style={{ color: "var(--theme-text-main)" }}
-          >
-            Trip Planner
-          </h1>
-          <p
-            className="mt-2 text-sm sm:text-base max-w-2xl font-medium"
-            style={{ color: "var(--theme-text-muted)" }}
-          >
-            Create travel groups with friends, invite members with shareable
-            codes, and prepare group preferences for smart AI recommendations.
-          </p>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 transition-colors">
+      <PlannerHeader
+        onJoin={() => setIsJoinModalOpen(true)}
+        onCreate={() => setIsCreateModalOpen(true)}
+      />
 
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setIsJoinModalOpen(true)}
-            className="rounded-xl font-bold cursor-pointer text-white"
-          >
-            <KeyRound className="h-4 w-4 mr-1.5" />
-            Join with Code
-          </Button>
+      <StatsBar stats={stats} />
 
-          <Button
-            type="button"
-            onClick={() => setIsCreateModalOpen(true)}
-            className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
-            style={{
-              backgroundColor: "var(--theme-btn-bg, #c8ff00)",
-              color: "var(--theme-btn-text, #06110d)",
-            }}
-          >
-            <Plus className="h-4 w-4 mr-1.5" />
-            Create Trip
-          </Button>
-        </div>
-      </div>
+      <FilterBar
+        stats={stats}
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+      />
 
-      {/* Search and Filters Bar */}
-      <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="relative w-full sm:w-80">
-          <Search className="h-4 w-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search your trips..."
-            className="w-full border rounded-xl pl-10 pr-4 py-2 text-sm font-medium focus:outline-none transition-colors"
-            style={{
-              backgroundColor: "var(--theme-surface-solid)",
-              borderColor: "var(--theme-border-subtle)",
-              color: "var(--theme-text-main)",
-            }}
-          />
-        </div>
-
-        <div
-          className="text-xs font-bold"
-          style={{ color: "var(--theme-text-muted)" }}
-        >
-          Total trips:{" "}
-          <span style={{ color: "var(--theme-text-main)" }}>
-            {groups.length}
-          </span>
-        </div>
-      </div>
-
-      {/* Trips Content */}
       <div className="mt-8">
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2
-              className="h-8 w-8 animate-spin"
-              style={{ color: "var(--theme-border-highlight)" }}
-            />
-            <p
-              className="mt-3 text-sm font-semibold"
-              style={{ color: "var(--theme-text-muted)" }}
-            >
-              Loading your travel groups...
-            </p>
-          </div>
-        ) : filteredGroups.length === 0 ? (
-          /* Empty State */
-          <div
-            className="rounded-3xl border border-dashed p-12 text-center transition-all"
-            style={{
-              backgroundColor: "var(--theme-surface)",
-              borderColor: "var(--theme-border)",
-            }}
-          >
-            <div
-              className="h-16 w-16 mx-auto rounded-2xl flex items-center justify-center mb-4 shadow-sm"
-              style={{
-                backgroundColor: "var(--theme-elevated)",
-                color: "var(--theme-text-main)",
-              }}
-            >
-              <Compass className="h-8 w-8" />
-            </div>
-            <h3
-              className="text-lg font-bold"
-              style={{ color: "var(--theme-text-main)" }}
-            >
-              {searchQuery ? "No matching trips found" : "No trips planned yet"}
-            </h3>
-            <p
-              className="mt-1 text-sm max-w-md mx-auto"
-              style={{ color: "var(--theme-text-muted)" }}
-            >
-              {searchQuery
-                ? "Try a different search query or clear the filter."
-                : "Start your journey by creating your first travel group, or enter a friend’s invite code to join theirs."}
-            </p>
-            {!searchQuery && (
-              <div className="mt-6 flex items-center justify-center gap-3">
-                <Button
-                  onClick={() => setIsJoinModalOpen(true)}
-                  variant="outline"
-                  className="rounded-xl font-bold cursor-pointer"
-                >
-                  <KeyRound className="h-4 w-4 mr-1.5" />
-                  Join Trip
-                </Button>
-                <Button
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
-                  style={{
-                    backgroundColor: "var(--theme-btn-bg, #c8ff00)",
-                    color: "var(--theme-btn-text, #06110d)",
-                  }}
-                >
-                  <Plus className="h-4 w-4 mr-1.5" />
-                  Create First Trip
-                </Button>
-              </div>
-            )}
-          </div>
-        ) : (
-          /* Trip Cards Grid */
+        <TripListState
+          isLoading={isLoading}
+          isError={isError}
+          isEmpty={filteredGroups.length === 0}
+          hasFilters={hasFilters}
+          onRefetch={refetch}
+          onClearFilters={() => {
+            setSearchQuery("");
+            setActiveFilter("all");
+          }}
+          onJoin={() => setIsJoinModalOpen(true)}
+          onCreate={() => setIsCreateModalOpen(true)}
+        />
+
+        {!isLoading && !isError && filteredGroups.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredGroups.map((group) => (
               <TripCard
                 key={group.id}
                 group={group}
                 currentUser={currentUser}
+                copiedId={copiedId}
+                onCopy={handleCopyCode}
+                onDelete={setGroupToDelete}
+                onLeave={setGroupToLeave}
               />
             ))}
           </div>
         )}
       </div>
 
-      {/* Modal Components */}
+      {/* Modals & Dialogs */}
       <CreateGroupModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
       />
-
       <JoinGroupModal
         isOpen={isJoinModalOpen}
         onClose={() => setIsJoinModalOpen(false)}
+      />
+      <DeleteGroupDialog
+        isOpen={Boolean(groupToDelete)}
+        onClose={() => setGroupToDelete(null)}
+        groupName={groupToDelete?.name}
+        isDeleting={isDeleting}
+        onConfirm={() => groupToDelete?.id && deleteGroup(groupToDelete.id)}
+      />
+      <LeaveTripDialog
+        isOpen={Boolean(groupToLeave)}
+        onClose={() => setGroupToLeave(null)}
+        groupName={groupToLeave?.name}
+        isLeaving={isLeaving}
+        onConfirm={() => groupToLeave?.id && leaveGroup(groupToLeave.id)}
       />
     </div>
   );
 };
 
-export default TripPlanner;
+export default Planner;
+export { Planner as TripPlanner };
