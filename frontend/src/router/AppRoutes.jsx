@@ -4,17 +4,15 @@ import { useAppSelector } from "@/store/hooks";
 import { useCurrentUser } from "@/hooks/useAuth";
 import { MainLayout } from "../layout/MainLayout";
 import DashboardLayout from "../layout/DashboardLayout";
-import Home from "../pages/home/Home";
-import Login from "../pages/auth/login/Login";
-import SignUp from "../pages/auth/signUp/SignUp";
-import TripPlanner from "../pages/planner/TripPlanner";
-import TripDetails from "../pages/planner/TripDetails";
-import DashboardOverview from "../pages/dashboard/DashboardOverview";
-import DashboardTrips from "../pages/dashboard/DashboardTrips";
-import DashboardExplore from "../pages/dashboard/DashboardExplore";
-import DashboardPreferences from "../pages/dashboard/DashboardPreferences";
-import DashboardProfile from "../pages/dashboard/DashboardProfile";
-import NotFound from "../pages/not-found/NotFound";
+import Home from "../pages/Home";
+import Login from "../pages/auth/Login";
+import SignUp from "../pages/auth/SignUp";
+import Overview from "../pages/dashboard/Overview";
+import Planner from "../pages/dashboard/Planner";
+import TripDetails from "../pages/dashboard/TripDetails";
+import Explore from "../pages/dashboard/Explore";
+import Profile from "../pages/dashboard/Profile";
+import NotFound from "../pages/NotFound";
 
 const ProtectedRoute = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -60,13 +58,12 @@ export const AppRoutes = () => {
       {/* ── Dashboard Routes (protected, collapsible sidebar layout) ── */}
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardOverview />} />
-          <Route path="trips" element={<DashboardTrips />} />
-          <Route path="planner" element={<TripPlanner />} />
+          <Route index element={<Overview />} />
+          <Route path="trips" element={<Navigate to="/dashboard/planner" replace />} />
+          <Route path="planner" element={<Planner />} />
           <Route path="planner/:id" element={<TripDetails />} />
-          <Route path="explore" element={<DashboardExplore />} />
-          <Route path="preferences" element={<DashboardPreferences />} />
-          <Route path="profile" element={<DashboardProfile />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Route>
 

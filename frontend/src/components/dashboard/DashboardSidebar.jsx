@@ -18,14 +18,11 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Map,
   CalendarDays,
   Compass,
-  Sparkles,
   User,
   LogOut,
   ChevronLeft,
-  ChevronRight,
   Plus,
 } from "lucide-react";
 
@@ -36,7 +33,6 @@ const navItems = [
     icon: LayoutDashboard,
     path: "/dashboard",
   },
-  { id: "trips", label: "My Trips", icon: Map, path: "/dashboard/trips" },
   {
     id: "planner",
     label: "Planner",
@@ -48,12 +44,6 @@ const navItems = [
     label: "Explore",
     icon: Compass,
     path: "/dashboard/explore",
-  },
-  {
-    id: "preferences",
-    label: "Preferences",
-    icon: Sparkles,
-    path: "/dashboard/preferences",
   },
   { id: "profile", label: "Profile", icon: User, path: "/dashboard/profile" },
 ];

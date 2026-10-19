@@ -19,7 +19,7 @@ import {
   DeleteAccountModal,
 } from "@/components/profile";
 
-export default function DashboardProfile() {
+export default function Profile() {
   const [activeTab, setActiveTab] = useState("general");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 

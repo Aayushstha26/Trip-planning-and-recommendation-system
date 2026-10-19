@@ -218,11 +218,9 @@ export const InlinePreferenceForm = ({ groupId, initialPreference = null }) => {
                       backgroundColor: selected
                         ? "var(--theme-elevated)"
                         : "transparent",
-                      borderColor: selected
-                        ? "var(--theme-border-highlight)"
-                        : "var(--theme-border-subtle)",
+                      borderColor: "var(--theme-border-subtle)",
                       color: selected
-                        ? "var(--theme-border-highlight)"
+                        ? "var(--theme-text-main)"
                         : "var(--theme-text-muted)",
                     }}
                   >
@@ -337,21 +335,16 @@ export const InlinePreferenceForm = ({ groupId, initialPreference = null }) => {
                         backgroundColor: sel
                           ? "var(--theme-elevated)"
                           : "transparent",
-                        borderColor: sel
-                          ? "var(--theme-border-highlight)"
-                          : "var(--theme-border-subtle)",
+                        borderColor: "var(--theme-border-subtle)",
                         color: sel
                           ? "var(--theme-text-main)"
                           : "var(--theme-text-muted)",
-                        boxShadow: sel
-                          ? "0 0 0 1px var(--theme-border-highlight)"
-                          : "none",
                       }}
                     >
                       {sel && (
                         <Check
                           className="h-3 w-3"
-                          style={{ color: "var(--theme-border-highlight)" }}
+                          style={{ color: "var(--theme-text-main)" }}
                         />
                       )}
                       {opt.label}
@@ -397,9 +390,7 @@ export const InlinePreferenceForm = ({ groupId, initialPreference = null }) => {
                     backgroundColor: sel
                       ? "var(--theme-elevated)"
                       : "transparent",
-                    borderColor: sel
-                      ? "var(--theme-border-highlight)"
-                      : "var(--theme-border-subtle)",
+                    borderColor: "var(--theme-border-subtle)",
                     color: sel
                       ? "var(--theme-text-main)"
                       : "var(--theme-text-muted)",
@@ -408,7 +399,7 @@ export const InlinePreferenceForm = ({ groupId, initialPreference = null }) => {
                   {sel && (
                     <Check
                       className="h-3 w-3"
-                      style={{ color: "var(--theme-border-highlight)" }}
+                      style={{ color: "var(--theme-text-main)" }}
                     />
                   )}
                   {interest}
@@ -449,15 +440,10 @@ export const InlinePreferenceForm = ({ groupId, initialPreference = null }) => {
                         backgroundColor: sel
                           ? "var(--theme-elevated)"
                           : "transparent",
-                        borderColor: sel
-                          ? "var(--theme-border-highlight)"
-                          : "var(--theme-border-subtle)",
+                        borderColor: "var(--theme-border-subtle)",
                         color: sel
                           ? "var(--theme-text-main)"
                           : "var(--theme-text-muted)",
-                        boxShadow: sel
-                          ? "0 0 0 1px var(--theme-border-highlight)"
-                          : "none",
                       }}
                     >
                       {m.label}
