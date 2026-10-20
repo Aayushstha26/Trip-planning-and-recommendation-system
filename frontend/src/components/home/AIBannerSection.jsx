@@ -1,45 +1,79 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Button } from '@/components/ui/button';
 
 export default function AIBannerSection() {
   const { isAuthenticated } = useSelector((s) => s.auth);
 
   return (
-    <section className="py-20 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-24 px-4" style={{ background: 'var(--theme-elevated)' }}>
+      <div className="max-w-5xl mx-auto">
+        {/* Two-column layout: text left, facts right */}
         <div
-          className="rounded-3xl p-10 text-center relative overflow-hidden"
-          style={{
-            background: 'linear-gradient(135deg, var(--theme-primary) 0%, var(--theme-accent-contrast, var(--theme-primary)) 100%)',
-            color: '#fff',
-          }}
+          className="rounded-3xl overflow-hidden grid grid-cols-1 lg:grid-cols-2"
+          style={{ boxShadow: 'var(--theme-card-shadow)' }}
         >
-          {/* Decorative blobs */}
-          <div className="absolute -top-10 -right-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-          <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full bg-white/10 blur-2xl pointer-events-none" />
-
-          <div className="relative z-10">
-            <div className="text-4xl mb-4">🤖</div>
+          {/* Left – dark panel */}
+          <div
+            className="p-10 flex flex-col justify-center"
+            style={{
+              background: 'var(--theme-primary)',
+              color: 'var(--theme-primary-text)',
+            }}
+          >
+            <div className="text-3xl mb-4">🤖</div>
             <h2
-              className="text-2xl sm:text-3xl font-extrabold mb-3"
-              style={{ letterSpacing: '-0.01em' }}
+              className="text-2xl sm:text-3xl font-extrabold mb-4 leading-tight"
+              style={{ letterSpacing: '-0.02em' }}
             >
-              Let AI do the heavy lifting
+              Let AI plan your<br />Nepal adventure
             </h2>
-            <p className="text-sm sm:text-base opacity-85 max-w-lg mx-auto mb-8 leading-relaxed">
-              Just tell us where you want to go and when. Our AI handles flights, hotels, activities, and local dining — so you can focus on making memories.
+            <p className="text-sm leading-relaxed opacity-75 mb-8">
+              Just tell us where you want to go in Nepal and when. Our AI handles trekking permits, teahouse bookings, altitude schedules, and local dining — so you can focus on making memories in the Himalayas.
             </p>
-            <Button
-              asChild
-              className="rounded-xl px-8 hover:scale-105 active:scale-100"
-              style={{ background: '#fff', color: 'var(--theme-primary)' }}
+            <Link
+              to={isAuthenticated ? '/dashboard/planner' : '/register'}
+              className="self-start px-7 py-3 rounded-xl font-bold text-sm transition-all hover:scale-105 active:scale-100"
+              style={{
+                background: 'var(--theme-primary-text)',
+                color: 'var(--theme-primary)',
+              }}
             >
-              <Link to={isAuthenticated ? '/plan-trip' : '/register'}>
-                Try It Free →
-              </Link>
-            </Button>
+              Start Planning Free →
+            </Link>
+          </div>
+
+          {/* Right – Nepal facts */}
+          <div
+            className="p-10 flex flex-col justify-center gap-6"
+            style={{ background: 'var(--theme-surface)' }}
+          >
+            <p className="text-xs font-bold uppercase tracking-widest" style={{ color: 'var(--theme-primary)' }}>
+              Nepal by the numbers
+            </p>
+            {[
+              ['8', 'of the world\'s 14 eight-thousanders are in Nepal', '🏔️'],
+              ['1,400+', 'trekking routes and trails across Nepal', '🥾'],
+              ['3', 'climate zones from tropical jungle to arctic peaks', '🌿'],
+              ['10M+', 'tourists visit Nepal every year', '✈️'],
+            ].map(([num, label, icon]) => (
+              <div key={num} className="flex items-start gap-4">
+                <div
+                  className="shrink-0 w-10 h-10 rounded-xl flex items-center justify-center text-lg"
+                  style={{ background: 'var(--theme-elevated)' }}
+                >
+                  {icon}
+                </div>
+                <div>
+                  <div className="font-extrabold text-xl leading-none" style={{ color: 'var(--theme-primary)' }}>
+                    {num}
+                  </div>
+                  <div className="text-xs mt-1 leading-snug" style={{ color: 'var(--theme-text-muted)' }}>
+                    {label}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
