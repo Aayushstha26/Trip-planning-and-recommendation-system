@@ -13,8 +13,8 @@ export default function Home() {
     >
       <HeroSection />
       <FeaturesSection />
-      <HowItWorksSection />
       <DestinationsSection />
+      <HowItWorksSection />
       <AIBannerSection />
     </div>
   );
