@@ -3,13 +3,9 @@ import {preferenceRepository} from "../perference/perference.repository.js";
 import destinationRepository from "../destination/destination.repository.js";
 import { recommendDestinations } from "../../common/utils/recommender.js";
 
-export const getRecommendationsService = async (userId, groupId, { limit, lambda }) => {
-    if (!(await preferenceRepository.groupExists(groupId))) {
-      throw new ApiError("Group not found", 404);
-    } 
-
-    const caller = await preferenceRepository.findMember(groupId, userId);
-    if (!caller) throw new ApiError("You are not a member of this group", 403);
+const recommendationService = {
+  // Pending-member check + algorithm. No access checks, callers do those.
+  async computeRanking(groupId, lambda = 0.5) {
     const members = await preferenceRepository.findAllByGroupId(groupId);
 
     const pending = members.filter((m) => !m.preference);
@@ -21,7 +17,6 @@ export const getRecommendationsService = async (userId, groupId, { limit, lambda
       );
     }
 
-    // 3. Run the pipeline: filter, cosine similarity, least misery, rank
     const destinations = await destinationRepository.findAll();
 
     const { ranked, excluded } = recommendDestinations({
@@ -34,6 +29,20 @@ export const getRecommendationsService = async (userId, groupId, { limit, lambda
       lambda,
     });
 
+    return { members, destinations, ranked, excluded };
+  },
+
+  async getRecommendations(userId, groupId, { limit, lambda }) {
+    if (!(await preferenceRepository.groupExists(groupId))) {
+      throw new ApiError("Group not found", 404);
+    }
+
+    const caller = await preferenceRepository.findMember(groupId, userId);
+    if (!caller) throw new ApiError("You are not a member of this group", 403);
+
+    const { members, destinations, ranked, excluded } =
+      await recommendationService.computeRanking(groupId, lambda);
+
     return {
       groupId,
       lambda,
@@ -44,4 +53,6 @@ export const getRecommendationsService = async (userId, groupId, { limit, lambda
       recommendations: ranked.slice(0, limit),
       excluded,
     };
-  }
+  },
+};
+export default recommendationService;

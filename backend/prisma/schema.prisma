@@ -58,7 +58,7 @@ model Destination {
   updatedAt       DateTime   @updatedAt
 
   groups Group[]
-
+   votes Vote[]
   @@index([difficulty, estimatedBudget])
   @@map("destinations")
 }
@@ -88,7 +88,7 @@ model GroupMember {
   userId   Int
   role     MemberRole @default(MEMBER)
   joinedAt DateTime   @default(now())
-
+  vote Vote?
   group      Group       @relation(fields: [groupId], references: [id], onDelete: Cascade)
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   preference Preference?
@@ -112,4 +112,17 @@ model Preference {
   groupMember GroupMember @relation(fields: [groupMemberId], references: [id], onDelete: Cascade)
 
   @@map("preferences")
+}
+model Vote {
+  id            String   @id @default(uuid())
+  groupMemberId String   @unique
+  destinationId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  groupMember GroupMember @relation(fields: [groupMemberId], references: [id], onDelete: Cascade)
+  destination Destination @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+
+  @@index([destinationId])
+  @@map("votes")
 }

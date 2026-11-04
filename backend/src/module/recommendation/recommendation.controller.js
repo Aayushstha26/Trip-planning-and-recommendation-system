@@ -1,8 +1,8 @@
 import asyncHandler from "../../common/utils/asyncHandler.js";
-import { getRecommendationsService } from "./recommendation.service.js";
+import recommendationService  from "./recommendation.service.js";
 
 export const getRecommendations = asyncHandler(async (req, res) => {
-    const data = await getRecommendationsService(
+    const data = await recommendationService.getRecommendations(
         req.user.id,
         req.params.id,
         req.validated.query
