@@ -12,12 +12,17 @@ export const Login = () => {
   const location = useLocation()
   const [showPassword, setShowPassword] = useState(false)
 
-  const destination = location.state?.from || '/'
+  const destination = location.state?.from
 
   const { mutate: loginUser, isPending } = useLogin({
     onSuccess: (data) => {
       toast.success(data?.message || 'Welcome back!')
-      navigate(destination, { replace: true })
+      const role = data?.user?.role
+      if (role === 'ADMIN') {
+        navigate('/admin', { replace: true })
+      } else {
+        navigate(destination || '/dashboard', { replace: true })
+      }
     },
     onError: (err) => {
       toast.error(err?.message || 'Invalid email or password. Please try again.')

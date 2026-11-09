@@ -17,7 +17,7 @@ import {
   ProfileInfoForm,
   ChangePasswordForm,
   DeleteAccountModal,
-} from "@/components/profile";
+} from "./components";
 
 export default function Profile() {
   const [activeTab, setActiveTab] = useState("general");

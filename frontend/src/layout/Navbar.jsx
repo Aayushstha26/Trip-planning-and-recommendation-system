@@ -102,26 +102,39 @@ export const Navbar = () => {
         <div className="flex items-center gap-3">
           {user ? (
             <>
-              <Button
-                asChild
-                className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
-                style={{
-                  backgroundColor: "var(--theme-btn-bg, #c8ff00)",
-                  color: "var(--theme-btn-text, #06110d)",
-                }}
-              >
-                <Link to="/dashboard/planner">Plan Trip</Link>
-              </Button>
+              {user.role === "ADMIN" ? (
+                <Button
+                  asChild
+                  className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
+                  style={{
+                    backgroundColor: "var(--theme-btn-bg, #c8ff00)",
+                    color: "var(--theme-btn-text, #06110d)",
+                  }}
+                >
+                  <Link to="/admin">Admin Portal</Link>
+                </Button>
+              ) : (
+                <Button
+                  asChild
+                  className="rounded-xl font-bold shadow-md cursor-pointer transition-all hover:brightness-95 active:scale-95"
+                  style={{
+                    backgroundColor: "var(--theme-btn-bg, #c8ff00)",
+                    color: "var(--theme-btn-text, #06110d)",
+                  }}
+                >
+                  <Link to="/dashboard/planner">Plan Trip</Link>
+                </Button>
+              )}
 
-              {/* Profile Link -> Leads directly to Dashboard */}
+              {/* Profile Link */}
               <Link
-                to="/dashboard"
+                to={user.role === "ADMIN" ? "/admin" : "/dashboard"}
                 className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl border transition-all hover:opacity-90 active:scale-95 shadow-sm group"
                 style={{
                   backgroundColor: "var(--theme-elevated)",
                   borderColor: "var(--theme-border)",
                 }}
-                title="Go to Dashboard"
+                title={user.role === "ADMIN" ? "Go to Admin Portal" : "Go to Dashboard"}
               >
                 <div
                   className="h-8 w-8 rounded-lg flex items-center justify-center font-bold text-xs overflow-hidden shadow-xs transition-transform group-hover:scale-105"
@@ -151,7 +164,7 @@ export const Navbar = () => {
                     className="text-[10px] font-medium leading-none"
                     style={{ color: "var(--theme-text-muted)" }}
                   >
-                    Dashboard
+                    {user.role === "ADMIN" ? "Admin" : "Dashboard"}
                   </span>
                 </div>
               </Link>

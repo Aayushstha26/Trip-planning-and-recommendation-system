@@ -36,7 +36,7 @@ import {
   RemoveMemberDialog,
   InlinePreferenceForm,
   GroupConsensusPanel,
-} from "@/components/planner";
+} from "./components";
 
 export const TripDetails = () => {
   const { id: groupId } = useParams();
