@@ -12,7 +12,7 @@ import {
   CreateGroupModal,
   JoinGroupModal,
   DeleteGroupDialog,
-} from "@/components/planner";
+} from "./components";
 
 export const Planner = () => {
   const currentUser = useAppSelector((state) => state.auth.user);

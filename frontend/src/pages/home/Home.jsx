@@ -1,9 +1,9 @@
 import React from 'react';
-import HeroSection from '@/components/home/HeroSection';
-import FeaturesSection from '@/components/home/FeaturesSection';
-import HowItWorksSection from '@/components/home/HowItWorksSection';
-import DestinationsSection from '@/components/home/DestinationsSection';
-import AIBannerSection from '@/components/home/AIBannerSection';
+import HeroSection from './components/HeroSection';
+import FeaturesSection from './components/FeaturesSection';
+import HowItWorksSection from './components/HowItWorksSection';
+import DestinationsSection from './components/DestinationsSection';
+import AIBannerSection from './components/AIBannerSection';
 
 export default function Home() {
   return (
