@@ -2,16 +2,15 @@ import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { useMyGroups, useDeleteGroup, useLeaveGroup } from "@/hooks/useGroup";
 import { useAppSelector } from "@/store/hooks";
+import DeleteConfirmationModal from "@/components/common/DeleteConfirmationModal";
 import {
   PlannerHeader,
   StatsBar,
   FilterBar,
   TripCard,
   TripListState,
-  LeaveTripDialog,
   CreateGroupModal,
   JoinGroupModal,
-  DeleteGroupDialog,
 } from "./components";
 
 export const Planner = () => {
@@ -163,19 +162,25 @@ export const Planner = () => {
         isOpen={isJoinModalOpen}
         onClose={() => setIsJoinModalOpen(false)}
       />
-      <DeleteGroupDialog
+      <DeleteConfirmationModal
         isOpen={Boolean(groupToDelete)}
         onClose={() => setGroupToDelete(null)}
-        groupName={groupToDelete?.name}
-        isDeleting={isDeleting}
         onConfirm={() => groupToDelete?.id && deleteGroup(groupToDelete.id)}
+        title="Delete Trip Group?"
+        description="Are you sure you want to permanently delete this trip group? This action cannot be undone and will remove all members."
+        itemName={groupToDelete?.name}
+        confirmText="Confirm Delete"
+        isLoading={isDeleting}
       />
-      <LeaveTripDialog
+      <DeleteConfirmationModal
         isOpen={Boolean(groupToLeave)}
         onClose={() => setGroupToLeave(null)}
-        groupName={groupToLeave?.name}
-        isLeaving={isLeaving}
         onConfirm={() => groupToLeave?.id && leaveGroup(groupToLeave.id)}
+        title="Leave Travel Group?"
+        description="Are you sure you want to leave this group? You will no longer receive updates or be part of this trip unless re-invited."
+        itemName={groupToLeave?.name}
+        confirmText="Leave Trip"
+        isLoading={isLeaving}
       />
     </div>
   );

@@ -15,6 +15,7 @@ import Explore from "../pages/dashboard/explore/Explore";
 import Profile from "../pages/dashboard/profile/Profile";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminUsers from "../pages/admin/AdminUsers";
+import AdminDestinations from "../pages/admin/destinations/AdminDestinations";
 import NotFound from "../pages/NotFound";
 
 const ProtectedRoute = () => {
@@ -108,6 +109,7 @@ export const AppRoutes = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminDashboard />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="destinations" element={<AdminDestinations />} />
         </Route>
       </Route>
 

@@ -31,9 +31,8 @@ import {
   useRemoveMember,
 } from "@/hooks/useGroup";
 import { useAppSelector } from "@/store/hooks";
+import DeleteConfirmationModal from "@/components/common/DeleteConfirmationModal";
 import {
-  DeleteGroupDialog,
-  RemoveMemberDialog,
   InlinePreferenceForm,
   GroupConsensusPanel,
 } from "./components";
@@ -733,23 +732,29 @@ export const TripDetails = () => {
       </div>
 
       {/* Confirmation Modal: Delete Group */}
-      <DeleteGroupDialog
+      <DeleteConfirmationModal
         isOpen={isDeleteDialogOpen}
         onClose={() => setIsDeleteDialogOpen(false)}
         onConfirm={() => deleteGroup(groupId)}
-        isDeleting={isDeleting}
-        groupName={group.name}
+        title="Delete Trip Group?"
+        description="Are you sure you want to permanently delete this trip group? This action cannot be undone and will remove all members."
+        itemName={group.name}
+        confirmText="Confirm Delete"
+        isLoading={isDeleting}
       />
 
       {/* Confirmation Modal: Remove Member */}
-      <RemoveMemberDialog
+      <DeleteConfirmationModal
         isOpen={Boolean(memberToRemove)}
         onClose={() => setMemberToRemove(null)}
         onConfirm={() =>
           removeMember({ groupId, userId: memberToRemove?.userId })
         }
-        isRemoving={isRemoving}
-        member={memberToRemove}
+        title="Remove Traveler?"
+        description="Are you sure you want to remove this traveler from the trip group?"
+        itemName={memberToRemove?.user?.name || memberToRemove?.user?.email}
+        confirmText="Remove"
+        isLoading={isRemoving}
       />
     </div>
   );
